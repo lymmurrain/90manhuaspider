@@ -1,0 +1,7 @@
+2020-12-02 01:10:38 [scrapy.extensions.logstats] INFO: Crawled 330 pages (at 330 pages/min), scraped 283 items (at 283 items/min)
+2020-12-02 01:11:38 [scrapy.extensions.logstats] INFO: Crawled 779 pages (at 449 pages/min), scraped 732 items (at 449 items/min)
+2020-12-02 01:12:38 [scrapy.extensions.logstats] INFO: Crawled 1218 pages (at 439 pages/min), scraped 1170 items (at 438 items/min)
+2020-12-02 01:13:38 [scrapy.extensions.logstats] INFO: Crawled 1663 pages (at 445 pages/min), scraped 1616 items (at 446 items/min)
+2020-12-02 01:14:38 [scrapy.extensions.logstats] INFO: Crawled 1672 pages (at 9 pages/min), scraped 1625 items (at 9 items/min)
+2020-12-02 01:15:38 [scrapy.extensions.logstats] INFO: Crawled 1672 pages (at 0 pages/min), scraped 1625 items (at 0 items/min)
+2020-12-02 01:16:38 [scrapy.extensions.logstats] INFO: Crawled 1672 pages (at 0 pages/min), scraped 1625 items (at 0 items/min)
