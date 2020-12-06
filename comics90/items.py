@@ -36,6 +36,4 @@ class ComicItems(scrapy.Item):
 class PicItems(scrapy.Item):
     img_url = scrapy.Field()
     img_name = scrapy.Field()
-    comic_name = scrapy.Field()
-    chap_name = scrapy.Field()
-    page = scrapy.Field()
+

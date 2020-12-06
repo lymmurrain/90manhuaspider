@@ -5,7 +5,7 @@ import pymongo
 
 class ComicSpider(scrapy.Spider):
     name = 'comic'
-    start_urls = ['http://m.90mh.com/list/z/{}/'.format(i) for i in range(1, 4)]
+    start_urls = ['http://m.90mh.com/list/z/{}/'.format(i) for i in range(1, 46)]
 
     def start_requests(self):
         for url in self.start_urls:
@@ -14,7 +14,7 @@ class ComicSpider(scrapy.Spider):
     def parse(self, response):
         if not response.url:
             pass
-        # self.client.comicSpider.multiSuccess.insert_one({"url":response.url,'meta':response.meta})
+        self.client.comicSpider.multiSuccess.insert_one({"url":response.url,'meta':response.meta})
         comic_href_list = response.xpath("//ul//a[@class='txtA']//@href").extract()
         comic_name_list = response.xpath("//a[@class='txtA']/text()").extract()
         for comic_name,comic_url in zip(comic_name_list,comic_href_list):
@@ -42,10 +42,10 @@ class ComicSpider(scrapy.Spider):
               'update_time':  msg_lst_right[7] ,
            }
         }
-        self.client.comicSpider.comics_z.insert_one(info)
-        # for chap_name,chap_url in zip(chap_name_list,chap_href_list):
-        #     chap_name = chap_name.rjust(4,'0')
-        #     yield Request(url=chap_url, callback=self.parse_Pic, meta={'chap_name': chap_name, 'type': 'pic','comic_name':response.meta['comic_name'],'page':'001'})
+        yield info
+        for chap_name,chap_url in zip(chap_name_list,chap_href_list):
+            chap_name = chap_name.rjust(4,'0')
+            yield Request(url=chap_url, callback=self.parse_Pic, meta={'chap_name': chap_name, 'type': 'pic','comic_name':response.meta['comic_name'],'page':'001'})
 
     def parse_Pic(self,response):
         if not response.url:
@@ -76,6 +76,8 @@ class ComicSpider(scrapy.Spider):
 
     def __init__(self,*args,**kwargs):
         self.client = pymongo.MongoClient()
+        # 若mongo需认证请先认证
+        # self.client.admin.authenticate("yourusername", "yourpwd")
         super(ComicSpider, self).__init__(*args,**kwargs)
 
     def closed(self):
@@ -84,10 +86,12 @@ class ComicSpider(scrapy.Spider):
 
 class MyFavSpider(scrapy.Spider):
     name = 'myFavorite'
+    # 要爬取的漫画详情页url放入start_urls
     start_urls = ['http://m.90mh.com/manhua/zhongjiangchengweini/']
 
     def start_requests(self):
         for url in self.start_urls:
+            # 修改comic_name为漫画名字
             yield Request(url, meta={'comic_name':'终将成为你'})
 
     def parse(self,response):
@@ -130,5 +134,7 @@ class MyFavSpider(scrapy.Spider):
 
     def __init__(self,*args,**kwargs):
         self.client = pymongo.MongoClient()
+        # 若mongo需认证请先认证
+        # self.client.admin.authenticate("yourusername", "yourpwd")
         super(MyFavSpider, self).__init__(*args,**kwargs)
 

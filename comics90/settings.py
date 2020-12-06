@@ -12,10 +12,10 @@ SPIDER_MODULES = ['comics90.spiders']
 NEWSPIDER_MODULE = 'comics90.spiders'
 
 LOG_LEVEL = "INFO"
-# LOG_FILE = './log.log'
+LOG_FILE = './log.log'
 
-RETRY_ENABLED = True                  # 默认开启失败重试，一般关闭
-RETRY_TIMES = 2
+RETRY_ENABLED = True                  # 开启失败重试，一般关闭
+RETRY_TIMES = 3
 
 IMAGES_STORE = 'D:/comicSpider'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -31,7 +31,7 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 #开了delay0.2后 200item/min
-DOWNLOAD_DELAY = 0.1
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -41,7 +41,7 @@ COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
-DOWNLOAD_TIMEOUT = 10
+DOWNLOAD_TIMEOUT = 30
 # Override the default request headers:
 #DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -59,7 +59,7 @@ DOWNLOAD_TIMEOUT = 10
 DOWNLOADER_MIDDLEWARES = {
    'comics90.middlewares.UserAgentMiddleware': 343,
    'scrapy.downloadermiddlewares.retry.RetryMiddleware' : 550,
-   'comics90.middlewares.ProcessAllExceptionMiddleware':549
+   # 'comics90.middlewares.ProcessAllExceptionMiddleware':549
 }
 
 
@@ -74,14 +74,17 @@ MEDIA_ALLOW_REDIRECTS =True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+
+# 若要将图片持久化到本地请开启PicPipeline
 ITEM_PIPELINES = {
     'comics90.pipelines.MongoPipeline': 300,
+    # 'comics90.pipelines.PicPipeline': 500,
     # 'scrapy_redis.pipelines.RedisPipeline': 400
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
-#AUTOTHROTTLE_ENABLED = True
+# AUTOTHROTTLE_ENABLED = True
 # The initial download delay
 #AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies
@@ -100,14 +103,18 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+# 使用分布式爬取，若使用comic中的爬虫请注释
 # 使用scrapy-redis组件的去重队列
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 # 使用scrapy-redis组件自己的调度器
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 # 是否允许暂停
-SCHEDULER_PERSIST = False
+SCHEDULER_PERSIST = True
 
 REDIS_ENCODING = 'utf-8'
-REDIS_PARAMS = {'password':'lymmurrain'}
-REDIS_HOST = '127.0.0.1'
+# 所使用redis的主机的ip
+REDIS_HOST = 'redis'
+# 所使用redis的主机的端口
 REDIS_PORT = 6379
+# 身份认证
+REDIS_PARAMS = {'password':'yourpwd'}
